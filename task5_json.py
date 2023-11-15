@@ -14,6 +14,18 @@ def get_valid_input(string):
             return input_
         print("Input is invalid: ")
 
+def load_json(file):
+    try:
+        with open(file, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("File doesn't exist")
+        return -1
+    except JSONDecodeError:
+        print("Could't read the file")
+        return -1
+
+
 def add_data(file):
     data = {}
     try:
@@ -42,31 +54,19 @@ def add_data(file):
 
 
 def get_data(file):
-    try:
-        with open(file, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print("File doesn't exist")
-        return -1
-    except JSONDecodeError:
-        print("Could't read the file")
+    data = load_json(file)
+    if data == -1:
         return -1
     print(data)
     return 1
 
 
 def update_data(file):
-    try:
-        with open(file, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print("File doesn't exist")
-        return -1
-    except JSONDecodeError:
-        print("Could't read the file")
+    data = load_json(file)
+    if data == -1:
         return -1
 
-    key = get_valid_input('nput a key: ')
+    key = get_valid_input('Input a key: ')
     if key not in data:
         print("The key does not exist")
         return -1
@@ -80,14 +80,8 @@ def update_data(file):
 
 
 def del_data(file):
-    try:
-        with open(file, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print("File doesn't exist")
-        return -1
-    except JSONDecodeError:
-        print("Could't read the file")
+    data = load_json(file)
+    if data == -1:
         return -1
 
     key = get_valid_input('Input a key: ')
